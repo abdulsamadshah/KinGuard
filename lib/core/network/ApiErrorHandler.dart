@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:kinguard/core/utils/deep_Link/Context_Utility.dart';
+import 'package:kinguard/core/network/logoutuser.dart';
 
 class ApiErrorHandler {
   static String handleDioError(DioException e) {
@@ -25,7 +25,7 @@ class ApiErrorHandler {
       }
 
       if (statusCode == 401) {
-        LogoutUser().logout(ContextUtility.context!);
+        LogoutUser().logout();
       } else if (statusCode == 503) {
         throw "Oops! Something Went Wrong";
       } else if (e.response!.statusCode == 422 ||

@@ -9,29 +9,29 @@ const double defaultPadding = 16.0;
 var ProductionUrl = "https://production.fgmanpower.co.in";
 String TestingUrl = "https://admin.fgmanpower.co.in";
 
-class Constant {
-  static String env = "dev";
-  static String Baseurl = "$TestingUrl/api/";
-  //  static String imageBaseUrl = TestingUrl;
-  static String StartJobDeepLink_Url = "https://partner.fgmanpower.co.in";
-  static String appGuide = "https://youtu.be/TnKDRwKU3fw?si=2LJtscy1-Apjks2i";
+class ConstRes {
+  ///------------------------ Backend urls and key ------------------------///
+
+  static const String development = 'http://172.20.10.5:4000/'; // Development
+  // static const String production = 'http://fgtracker.in:3000/'; //Prod
+  static const String aBaseUrl = '${development}api/';
+  static const String aImageBaseUrl = development;
+  static String socketUrl = "http://fgtracker.in:3000"; //pro
+  // static const String socketUrl = "http://172.24.241.163:4000"; //dev
+  static String DeepLink_Url = "https://fgtracker.in";
+  static String gMapApiKey = "AIzaSyAgt-V8kmcQJb_6Cj6LHArWfhWjVPh7N_Q";
+
   static BaseOptions networkOptions = BaseOptions(
-    receiveTimeout: const Duration(seconds: 15),
-    connectTimeout: const Duration(seconds: 15),
-    baseUrl: Baseurl,
+    baseUrl: aBaseUrl,
   );
 
   final Dio _dio = Dio();
-  Constant() {
-    BaseOptions options = BaseOptions(baseUrl: Baseurl);
+  ConstRes() {
+    BaseOptions options = BaseOptions(
+      baseUrl: aBaseUrl,
+    );
     _dio.options = options;
     _dio.interceptors.add(PrettyDioLogger());
   }
-
   Dio get sendRequest => _dio;
-  static String CurrentVersion = "";
-  static String STORAGE_USER_TOKEN_KEY = "token";
-  static String DEVICE_ID = "device_id";
-  static String Location_Permission = "Location_Permission";
-  static String isDarkMode = "isDarkMode";
 }

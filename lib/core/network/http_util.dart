@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:kinguard/core/constants/pref_res.dart';
 import 'package:kinguard/core/network/ApiErrorHandler.dart';
 
 import 'package:kinguard/core/network/Constant.dart';
@@ -12,7 +13,7 @@ class HttpUtil {
   factory HttpUtil() {
     return _instance;
   }
-  Constant api = Constant();
+  ConstRes api = ConstRes();
 
   HttpUtil._internal() {
     api.sendRequest.interceptors.add(PrettyDioLogger());
@@ -40,6 +41,30 @@ class HttpUtil {
     }
   }
 
+  Future<dynamic> authPost(String path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameteres,
+        FormData? formdata,
+        ProgressCallback? onSendProgress,
+        String? type}) async {
+    try {
+      api.sendRequest.options.headers["authorization"] =
+      "Bearer ${Global.storageServices.getTokenValue()!}";
+      api.sendRequest.options.headers['accept'] = 'application/json';
+      var response = await api.sendRequest.post(path,
+          data: type == "formdata" ? formdata : data,
+          onSendProgress: onSendProgress,
+          queryParameters: queryParameteres);
+      return response.data;
+    } catch (e) {
+      if (e is DioException) {
+        throw ApiErrorHandler.handleDioError(e);
+      }
+      throw "Something went wrong";
+    }
+  }
+
+
   Future<dynamic> userlocationpost(
     String path, {
     dynamic data,
@@ -49,7 +74,7 @@ class HttpUtil {
   }) async {
     try {
       var pref = await SharedPreferences.getInstance();
-      var token = pref.getString(Constant.STORAGE_USER_TOKEN_KEY);
+      var token = pref.getString(PrefConst.STORAGE_USER_TOKEN_KEY);
       var response = await api.sendRequest.post(
         path,
         data: type == "formdata" ? formdata : data,
@@ -73,22 +98,6 @@ class HttpUtil {
     Map<String, dynamic>? data,
     String? LogOuttype,
   }) async {
-    try {
-      api.sendRequest.options.headers["authorization"] =
-          "Bearer ${Global.storageServices.getTokenValue()}";
-      api.sendRequest.options.headers['accept'] = 'application/json';
-      api.sendRequest.options.headers['content-type'] = 'application/json';
-      var response = await api.sendRequest.get(path, queryParameters: data);
-      return response.data;
-    } catch (e) {
-      if (e is DioException) {
-        throw ApiErrorHandler.handleDioError(e);
-      }
-      throw "Something went wrong";
-    }
-  }
-
-  Future<dynamic> getbill(String path, {Map<String, dynamic>? data}) async {
     try {
       api.sendRequest.options.headers["authorization"] =
           "Bearer ${Global.storageServices.getTokenValue()}";

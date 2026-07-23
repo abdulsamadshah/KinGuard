@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kinguard/core/theme/app_colors.dart';
+
+class Utils {
+  static flutterToast(
+    String message, {
+    ToastGravity gravitys = ToastGravity.BOTTOM,
+    Toast toastlenght = Toast.LENGTH_SHORT,
+  }) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: gravitys,
+      timeInSecForIosWeb: 1,
+
+      backgroundColor: AppColors.primary,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+}

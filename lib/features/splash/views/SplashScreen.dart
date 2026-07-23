@@ -27,12 +27,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(BuildContext context) {
     ref.listen<SplashState>(splashProvider, (previous, next) {
       if (next == SplashState.authenticated) {
-        print("==========HomeScreen==========");
-        appRouter.router.pushNamed(RouteConstants.homeScreen);
+        appRouter.router.goNamed(RouteConstants.homeScreen);
       }
       if (next == SplashState.unauthenticated) {
-        print("==========LoginScreen==========");
-        appRouter.router.pushNamed(RouteConstants.loginScreen);
+        appRouter.router.pushReplacementNamed(RouteConstants.loginScreen);
       }
     });
 
