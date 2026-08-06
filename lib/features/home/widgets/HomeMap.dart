@@ -43,7 +43,7 @@ class _HomeMapSectionState extends State<HomeMapSection> {
     return Stack(
       children: [
         SizedBox(
-          height: 420.h,
+          height: 280.h,
           child: GoogleMap(
             initialCameraPosition: CameraPosition(
               target: _center,

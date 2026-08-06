@@ -160,7 +160,7 @@ class FamilyMemberCard extends StatelessWidget {
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(17.r),
         border: Border.all(color: color.withOpacity(0.25), width: 1.5),
         boxShadow: const [
           BoxShadow(
