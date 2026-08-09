@@ -94,7 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 16.h),
 
-
                   SizedBox(
                     height: 50.h,
                     child: ListView.separated(
@@ -111,15 +110,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            FamilyStatus(viewAll: () {
-              appRouter.router.pushNamed(RouteConstants.groupDetails);
-            }, onPressFamilyStatus: () {}),
+            FamilyStatus(
+              viewAll: () {
+                appRouter.router.pushNamed(RouteConstants.groupDetails);
+              },
+              onPressFamilyStatus: () {},
+            ),
             SizedBox(height: 10.h),
             const HomeMapSection(),
-            QuickActions(createGroup: () {
-
-              appRouter.router.pushNamed(RouteConstants.createGroup);
-            }, iAmSafe: () {  }, startJourney: () {  },),
+            QuickActions(
+              createGroup: () {
+                appRouter.router.pushNamed(RouteConstants.createGroup);
+              },
+              iAmSafe: () {
+                appRouter.router.pushNamed(RouteConstants.safeJourney);
+              },
+              startJourney: () {
+                appRouter.router.pushNamed(RouteConstants.liveTracking);
+              },
+              addMember: () {
+                appRouter.router.pushNamed(RouteConstants.joinMember);
+              },
+            ),
           ],
         ),
       ),
@@ -213,7 +225,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   Widget _buildAllGroupsButton() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 11.h),
@@ -242,7 +253,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 
   Widget _buildGroupCard(GroupModel group, int index) {
     final isActive = selectedIndex == index;

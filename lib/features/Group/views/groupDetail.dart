@@ -600,7 +600,7 @@ class GroupDetailsScreen extends StatelessWidget {
     );
   }
 
-  // ============ GROUP ACTIONS ============
+
   Widget _buildGroupActions() {
     return Container(
       padding: EdgeInsets.all(14.w),
@@ -631,7 +631,7 @@ class GroupDetailsScreen extends StatelessWidget {
                   bgColor: const Color(0xFFDBEAFE),
                 ),
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 7.w),
               Expanded(
                 child: _actionCard(
                   icon: Icons.share_rounded,
@@ -640,7 +640,7 @@ class GroupDetailsScreen extends StatelessWidget {
                   bgColor: const Color(0xFFD1FAE5),
                 ),
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 7.w),
               Expanded(
                 child: _actionCard(
                   icon: Icons.settings_rounded,
@@ -649,7 +649,7 @@ class GroupDetailsScreen extends StatelessWidget {
                   bgColor: const Color(0xFFEDE9FE),
                 ),
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 7.w),
               Expanded(
                 child: _actionCard(
                   icon: Icons.warning_amber_rounded,
@@ -708,7 +708,7 @@ class GroupDetailsScreen extends StatelessWidget {
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 10.sp,
+              fontSize: 7.sp,
               fontFamily: 'Inter',
               fontWeight: FontWeight.w600,
               color: const Color(0xFF1F2937),

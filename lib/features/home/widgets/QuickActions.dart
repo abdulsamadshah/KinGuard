@@ -6,11 +6,13 @@ class QuickActions extends StatelessWidget {
   void Function() startJourney;
   void Function() createGroup;
   void Function() iAmSafe;
+  void Function() addMember;
   QuickActions({
     super.key,
     required this.createGroup,
     required this.iAmSafe,
     required this.startJourney,
+    required this.addMember,
   });
 
   @override
@@ -39,7 +41,7 @@ class QuickActions extends StatelessWidget {
                   onTap: startJourney,
                 ),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 9.w),
               Expanded(
                 child: _QuickActionCard(
                   icon: Icons.group_add_rounded,
@@ -48,7 +50,18 @@ class QuickActions extends StatelessWidget {
                   onTap: createGroup,
                 ),
               ),
-              SizedBox(width: 12.w),
+
+              SizedBox(width: 9.w),
+              Expanded(
+                child: _QuickActionCard(
+                  icon: Icons.person,
+                  label: "Add Member",
+                  iconColor:  Colors.deepOrange,
+                  onTap: addMember,
+                ),
+              ),
+
+              SizedBox(width: 9.w),
               Expanded(
                 child: _QuickActionCard(
                   icon: Icons.shield_rounded,
@@ -112,7 +125,7 @@ class _QuickActionCard extends StatelessWidget {
               label,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10.sp,
+                fontSize: 9.sp,
                 fontFamily: FontFamily.interSemiBold,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff1A1A2E),

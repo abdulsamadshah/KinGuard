@@ -3,11 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:kinguard/core/utils/deep_Link/Context_Utility.dart';
 import 'package:kinguard/features/Group/views/createGroup.dart';
 import 'package:kinguard/features/Group/views/groupDetail.dart';
+import 'package:kinguard/features/Group/views/joinMember.dart';
 import 'package:kinguard/features/auth/views/veriefy_screen.dart';
 import 'package:kinguard/features/home/views/MainNavigationScreen.dart';
+import 'package:kinguard/features/profile/views/emergency_Contact.dart';
+import 'package:kinguard/features/safeJourney/views/SafeJourney.dart';
 import 'package:kinguard/features/splash/views/SplashScreen.dart';
 import 'package:kinguard/features/auth/views/login_screen.dart';
-import 'package:kinguard/features/home/views/HomeScreen.dart';
+import 'package:kinguard/features/tracking/views/liveTracking.dart';
 import 'app_route_constants.dart';
 
 class MyAppRouter {
@@ -67,6 +70,36 @@ class MyAppRouter {
             path: '/GroupDetailsScreen',
             pageBuilder: (context, state) {
               return MaterialPage(child: GroupDetailsScreen());
+            },
+          ),
+
+          GoRoute(
+            name: RouteConstants.joinMember,
+            path: '/JoinMemberScreen',
+            pageBuilder: (context, state) {
+              return MaterialPage(child: JoinMemberScreen());
+            },
+          ),
+          GoRoute(
+            name: RouteConstants.safeJourney,
+            path: '/SafeJourneyScreen',
+            pageBuilder: (context, state) {
+              return MaterialPage(child: SafeJourneyScreen());
+            },
+          ),
+          GoRoute(
+            name: RouteConstants.liveTracking,
+            path: '/LiveTrackingScreen',
+            pageBuilder: (context, state) {
+              return MaterialPage(child: LiveTrackingScreen());
+            },
+          ),
+
+          GoRoute(
+            name: RouteConstants.emergencyContact,
+            path: '/EmergencyContactScreen',
+            pageBuilder: (context, state) {
+              return MaterialPage(child: EmergencyContactsScreen());
             },
           ),
         ],

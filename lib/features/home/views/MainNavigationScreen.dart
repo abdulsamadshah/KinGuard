@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kinguard/features/Alert/views/AlertScreen.dart';
 import 'package:kinguard/features/home/providers/home_provider.dart';
+import 'package:kinguard/features/profile/views/profileScreen.dart';
 import 'package:kinguard/gen/fonts.gen.dart';
 import 'HomeScreen.dart';
 
 class MainNavigationScreen extends ConsumerWidget {
-  const MainNavigationScreen({super.key});
+   MainNavigationScreen({super.key});
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    Center(child: Text("Groups")),
-    Center(child: Text("Alerts")),
-    Center(child: Text("Profile")),
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const Center(child: Text("Groups")),
+    AlertsScreen(),
+    ProfileScreen(),
   ];
 
   @override

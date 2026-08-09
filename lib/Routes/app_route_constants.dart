@@ -5,4 +5,8 @@ class RouteConstants {
   static const String homeScreen = 'HomeScreen';
   static const String createGroup = 'createGroupScreen';
   static const String groupDetails = 'GroupDetailsScreen';
+  static const String joinMember = 'JoinMemberScreen';
+  static const String safeJourney = 'SafeJourneyScreen';
+  static const String liveTracking = 'LiveTrackingScreen';
+  static const String emergencyContact = 'EmergencyContactScreen';
 }
