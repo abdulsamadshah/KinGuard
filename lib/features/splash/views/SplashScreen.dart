@@ -30,8 +30,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         appRouter.router.goNamed(RouteConstants.homeScreen);
       }
       if (next == SplashState.unauthenticated) {
-        appRouter.router.goNamed(RouteConstants.homeScreen);
-        // appRouter.router.pushReplacementNamed(RouteConstants.loginScreen);
+        // appRouter.router.goNamed(RouteConstants.homeScreen);
+        appRouter.router.pushReplacementNamed(RouteConstants.loginScreen);
       }
     });
 

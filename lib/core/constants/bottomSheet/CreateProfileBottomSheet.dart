@@ -4,14 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kinguard/core/Widget/common_widgets/app_button.dart';
 import 'package:kinguard/core/constants/bottomSheet/selectFileBottomSheet.dart';
-import 'package:kinguard/core/theme/app_colors.dart';
 import 'package:kinguard/core/values/utility.dart';
 import 'package:kinguard/features/auth/providers/verify_provider.dart';
-import 'package:kinguard/features/auth/services/auth_service.dart';
 import 'package:kinguard/gen/fonts.gen.dart';
 
 class CreateProfileBottomSheet extends StatelessWidget {
-
   const CreateProfileBottomSheet({super.key});
 
   static Future<void> show(BuildContext context) async {
@@ -243,17 +240,21 @@ class _CreateProfileBottomSheetContentState
               ),
               SizedBox(height: 48.h),
 
-              ReausableButton(title: "Continue",ontap: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  ref
-                      .read(verifyControllerProvider.notifier)
-                      .register(userName: _nameController.text);
+              ReausableButton(
+                title: "Continue",
+                ontap: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    ref
+                        .read(verifyControllerProvider.notifier)
+                        .register(userName: _nameController.text);
 
-                  Navigator.pop(context);
-                }
-              },isLoading:   ref
-                  .watch(verifyControllerProvider)
-                  .isLoadingRegister ?? false,),
+                    Navigator.pop(context);
+                  }
+                },
+                isLoading:
+                    ref.watch(verifyControllerProvider).isLoadingRegister ??
+                    false,
+              ),
               SizedBox(height: 20.h),
             ],
           ),

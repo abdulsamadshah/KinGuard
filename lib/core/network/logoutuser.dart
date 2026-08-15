@@ -8,6 +8,6 @@ class LogoutUser {
     Global.storageServices.remove(PrefConst.STORAGE_USER_TOKEN_KEY);
     Global.storageServices.remove(PrefConst.DEVICE_ID);
 
-    appRouter.router.go(RouteConstants.loginScreen);
+    appRouter.router.goNamed(RouteConstants.loginScreen);
   }
 }

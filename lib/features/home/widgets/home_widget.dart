@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kinguard/core/theme/app_colors.dart';
 import 'package:kinguard/gen/fonts.gen.dart';
 
 AppBar homeAppBar() {
@@ -20,7 +19,7 @@ AppBar homeAppBar() {
             fontFamily: FontFamily.interBold,
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
-            color: Colors.blue, // Green
+            color: Colors.blue,
           ),
         ),
         Text(
@@ -29,7 +28,7 @@ AppBar homeAppBar() {
             fontFamily: FontFamily.interBold,
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
-            color: const Color(0xff00C48C), // Purple
+            color: const Color(0xff00C48C),
           ),
         ),
       ],

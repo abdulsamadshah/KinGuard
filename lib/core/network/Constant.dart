@@ -12,24 +12,20 @@ String TestingUrl = "https://admin.fgmanpower.co.in";
 class ConstRes {
   ///------------------------ Backend urls and key ------------------------///
 
-  static const String development = 'http://172.20.10.5:4000/'; // Development
+  static const String development = 'http://10.178.36.163:5000/'; // Development
   // static const String production = 'http://fgtracker.in:3000/'; //Prod
   static const String aBaseUrl = '${development}api/';
   static const String aImageBaseUrl = development;
-  static String socketUrl = "http://fgtracker.in:3000"; //pro
-  // static const String socketUrl = "http://172.24.241.163:4000"; //dev
+  // static String socketUrl = "http://fgtracker.in:3000"; //pro
+  static const String socketUrl = "http://10.178.36.163:5000"; //dev
   static String DeepLink_Url = "https://fgtracker.in";
   static String gMapApiKey = "AIzaSyAgt-V8kmcQJb_6Cj6LHArWfhWjVPh7N_Q";
 
-  static BaseOptions networkOptions = BaseOptions(
-    baseUrl: aBaseUrl,
-  );
+  static BaseOptions networkOptions = BaseOptions(baseUrl: aBaseUrl);
 
   final Dio _dio = Dio();
   ConstRes() {
-    BaseOptions options = BaseOptions(
-      baseUrl: aBaseUrl,
-    );
+    BaseOptions options = BaseOptions(baseUrl: aBaseUrl);
     _dio.options = options;
     _dio.interceptors.add(PrettyDioLogger());
   }
