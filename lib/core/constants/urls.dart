@@ -6,5 +6,7 @@ class Urls {
   static const String updateProfile = '${ConstRes.aBaseUrl}updateProfile';
   static const String profile = '${ConstRes.aBaseUrl}getProfile';
   static const String logOut = '${ConstRes.aBaseUrl}logOut';
+  static const String createGroup = '${ConstRes.aBaseUrl}group/createGroup';
+  static const String getUserGroups = '${ConstRes.aBaseUrl}group/getUserGroups';
 
 }

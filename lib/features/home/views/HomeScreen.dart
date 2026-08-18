@@ -1,145 +1,196 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kinguard/Routes/app_route_config.dart';
 import 'package:kinguard/Routes/app_route_constants.dart';
 import 'package:kinguard/data/models/GroupModel.dart';
+import 'package:kinguard/features/home/providers/home_provider.dart';
+
 import 'package:kinguard/features/home/widgets/FamilyStatus.dart';
 import 'package:kinguard/features/home/widgets/HomeMap.dart';
 import 'package:kinguard/features/home/widgets/QuickActions.dart';
 import 'package:kinguard/features/home/widgets/home_widget.dart';
 import 'package:kinguard/gen/fonts.gen.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int selectedIndex = 0;
-
-  final List<GroupModel> groups = [
-    GroupModel(
-      name: 'My Family',
-      members: 4,
-      icon: Icons.people_alt_rounded,
-      gradient: const [Color(0xFF3B82F6), Color(0xFF6366F1)],
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  // Dummy list for skeleton loading
+  final List<GroupData> _skeletonGroups = List.generate(
+    5,
+        (index) => GroupData(
+      groupId: index,
+      groupName: 'Loading Group',
+      groupType: 'Family',
+      createdBy: 0,
+      isActive: true,
     ),
-    GroupModel(
-      name: 'Parents Group',
-      members: 3,
-      icon: Icons.groups_rounded,
-      gradient: const [Color(0xFF10B981), Color(0xFF059669)],
-    ),
-    GroupModel(
-      name: 'Office Team',
-      members: 12,
-      icon: Icons.business_center_rounded,
-      gradient: const [Color(0xFFF59E0B), Color(0xFFF97316)],
-    ),
-    GroupModel(
-      name: 'Trip Group',
-      members: 5,
-      icon: Icons.flight_rounded,
-      gradient: const [Color(0xFF8B5CF6), Color(0xFFA855F7)],
-    ),
-    GroupModel(
-      name: 'College Friends',
-      members: 8,
-      icon: Icons.school_rounded,
-      gradient: const [Color(0xFFEC4899), Color(0xFFDB2777)],
-    ),
-    GroupModel(
-      name: 'Gym Buddies',
-      members: 6,
-      icon: Icons.fitness_center_rounded,
-      gradient: const [Color(0xFF14B8A6), Color(0xFF0891B2)],
-    ),
-  ];
+  );
 
   @override
   Widget build(BuildContext context) {
-    final activeGroup = groups[selectedIndex];
+    final homeState = ref.watch(homeProvider);
+    final groups = homeState.groups;
+    final isLoading = groups == null;
+
+    final displayGroups = isLoading ? _skeletonGroups : groups;
+    final activeGroup = isLoading
+        ? _skeletonGroups.first
+        : (homeState.activeGroup ?? _skeletonGroups.first);
+
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: homeAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 15.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Active Group',
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: FontFamily.interMedium,
-                      color: const Color(0xFF6B7280),
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: RefreshIndicator(
+        color: const Color(0xFF6366F1),
+        onRefresh: () => ref.read(homeProvider.notifier).refresh(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: Skeletonizer(
+                  enabled: isLoading,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildActiveCard(activeGroup),
-                      _buildAllGroupsButton(),
+                      Text(
+                        'Active Group',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: FontFamily.interMedium,
+                          color: const Color(0xFF6B7280),
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildActiveCard(activeGroup),
+                          _buildAllGroupsButton(),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      if (displayGroups.isEmpty)
+                        _buildEmptyGroups()
+                      else
+                        SizedBox(
+                          height: 50.h,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: displayGroups.length,
+                            separatorBuilder: (_, __) =>
+                                SizedBox(width: 7.w),
+                            itemBuilder: (context, index) {
+                              return _buildGroupCard(
+                                displayGroups[index],
+                                index,
+                                isLoading,
+                              );
+                            },
+                          ),
+                        ),
+                      SizedBox(height: 20.h),
                     ],
                   ),
-                  SizedBox(height: 16.h),
-
-                  SizedBox(
-                    height: 50.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: groups.length,
-                      separatorBuilder: (_, __) => SizedBox(width: 7.w),
-                      itemBuilder: (context, index) {
-                        return _buildGroupCard(groups[index], index);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                ],
+                ),
               ),
-            ),
-
-            FamilyStatus(
-              viewAll: () {
-                appRouter.router.pushNamed(RouteConstants.groupDetails);
-              },
-              onPressFamilyStatus: () {},
-            ),
-            SizedBox(height: 10.h),
-            const HomeMapSection(),
-            QuickActions(
-              createGroup: () {
-                appRouter.router.pushNamed(RouteConstants.createGroup);
-              },
-              iAmSafe: () {
-                appRouter.router.pushNamed(RouteConstants.safeJourney);
-              },
-              startJourney: () {
-                appRouter.router.pushNamed(RouteConstants.liveTracking);
-              },
-              addMember: () {
-                appRouter.router.pushNamed(RouteConstants.joinMember);
-              },
-            ),
-          ],
+              FamilyStatus(
+                viewAll: () {
+                  appRouter.router
+                      .pushNamed(RouteConstants.groupDetails);
+                },
+                onPressFamilyStatus: () {},
+              ),
+              SizedBox(height: 10.h),
+              const HomeMapSection(),
+              QuickActions(
+                createGroup: () {
+                  appRouter.router.pushNamed(RouteConstants.createGroup);
+                },
+                iAmSafe: () {
+                  appRouter.router.pushNamed(RouteConstants.safeJourney);
+                },
+                startJourney: () {
+                  appRouter.router.pushNamed(RouteConstants.liveTracking);
+                },
+                addMember: () {
+                  appRouter.router.pushNamed(RouteConstants.joinMember);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // Active Card Widget
-  Widget _buildActiveCard(GroupModel group) {
+  Widget _buildEmptyGroups() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: const Color(0xFFF3F4F6)),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline_rounded,
+            color: const Color(0xFF6B7280),
+            size: 18.sp,
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              'No groups yet. Create your first group!',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: FontFamily.interMedium,
+                color: const Color(0xFF6B7280),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () =>
+                appRouter.router.pushNamed(RouteConstants.createGroup),
+            child: Container(
+              padding:
+              EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: const Color(0xFF6366F1),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                'Create',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 11.sp,
+                  fontFamily: FontFamily.interSemiBold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActiveCard(GroupData group) {
+    final style = GroupStyleHelper.getStyle(group.groupType);
+    final name = group.groupName ?? 'Loading Group';
+    final memberCount = 0; // TODO: fetch actual count when available
+
     return Container(
       padding: EdgeInsets.all(8.r),
       decoration: BoxDecoration(
@@ -158,15 +209,15 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 7.h),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+              gradient: LinearGradient(
+                colors: style.gradient,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(11.r),
             ),
             child: Icon(
-              Icons.people_alt_rounded,
+              style.icon,
               color: Colors.white,
               size: 18.sp,
             ),
@@ -176,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                group.name,
+                name,
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontFamily: FontFamily.interBold,
@@ -188,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Text(
-                    '${group.members} Members',
+                    '$memberCount Members',
                     style: TextStyle(
                       fontSize: 9.sp,
                       fontFamily: FontFamily.interRegular,
@@ -226,172 +277,121 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildAllGroupsButton() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 11.h),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEDE9FE),
-        borderRadius: BorderRadius.circular(24.r),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.grid_view_rounded,
-            color: const Color(0xFF6366F1),
-            size: 15.sp,
-          ),
-          SizedBox(width: 6.w),
-          Text(
-            'All Groups',
-            style: TextStyle(
-              color: const Color(0xFF6366F1),
-              fontFamily: FontFamily.interSemiBold,
-              fontSize: 12.sp,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGroupCard(GroupModel group, int index) {
-    final isActive = selectedIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => selectedIndex = index),
+      onTap: () {
+        // TODO: navigate to all groups screen
+      },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 7.h),
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 11.h),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFFF5F3FF) : Colors.white,
-          borderRadius: BorderRadius.circular(14.r),
-          border: Border.all(
-            color: isActive ? const Color(0xFF6366F1) : Colors.transparent,
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          color: const Color(0xFFEDE9FE),
+          borderRadius: BorderRadius.circular(24.r),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: EdgeInsets.all(7.r),
-
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: group.gradient,
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Icon(group.icon, color: Colors.white, size: 15.sp),
+            Icon(
+              Icons.grid_view_rounded,
+              color: const Color(0xFF6366F1),
+              size: 15.sp,
             ),
-            SizedBox(width: 8.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  group.name,
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    fontFamily: FontFamily.interBold,
-                    color: const Color(0xFF1F2937),
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  '${group.members} Members',
-                  style: TextStyle(
-                    fontSize: 8.sp,
-                    fontFamily: FontFamily.interRegular,
-                    color: const Color(0xFF6B7280),
-                  ),
-                ),
-              ],
+            SizedBox(width: 6.w),
+            Text(
+              'All Groups',
+              style: TextStyle(
+                color: const Color(0xFF6366F1),
+                fontFamily: FontFamily.interSemiBold,
+                fontSize: 12.sp,
+              ),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-class FamilyMemberCard extends StatelessWidget {
-  final String name;
-  final String relation;
-  final String status;
-  final String battery;
-  final Color color;
-  final String image;
-  final bool isTraveling;
-  final bool isHome;
+  Widget _buildGroupCard(GroupData group, int index, bool isLoading) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final isActive = ref.watch(
+          homeProvider.select((s) => s.selectedIndex == index),
+        );
 
-  const FamilyMemberCard({
-    super.key,
-    required this.name,
-    required this.relation,
-    required this.status,
-    required this.battery,
-    required this.color,
-    required this.image,
-    this.isTraveling = false,
-    this.isHome = false,
-  });
+        final style = GroupStyleHelper.getStyle(group.groupType);
+        final name = group.groupName ?? 'Loading';
+        final memberCount = 0; // TODO: fetch from member count API
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 110.w,
-      margin: EdgeInsets.only(right: 12.w),
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: color.withOpacity(0.3)),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.topRight,
-            children: [
-              CircleAvatar(radius: 32.r, backgroundImage: NetworkImage(image)),
-              if (isTraveling)
-                CircleAvatar(
-                  radius: 10.r,
-                  backgroundColor: Colors.white,
+        return GestureDetector(
+          onTap: isLoading
+              ? null
+              : () => ref.read(homeProvider.notifier).selectGroup(index),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 7.h),
+            decoration: BoxDecoration(
+              color: isActive ? const Color(0xFFF5F3FF) : Colors.white,
+              borderRadius: BorderRadius.circular(14.r),
+              border: Border.all(
+                color: isActive
+                    ? const Color(0xFF6366F1)
+                    : Colors.transparent,
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(7.r),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: style.gradient,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
                   child: Icon(
-                    Icons.directions_car,
-                    size: 14,
-                    color: Colors.blue,
+                    style.icon,
+                    color: Colors.white,
+                    size: 15.sp,
                   ),
                 ),
-            ],
+                SizedBox(width: 8.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontFamily: FontFamily.interBold,
+                        color: const Color(0xFF1F2937),
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(
+                      '$memberCount Members',
+                      style: TextStyle(
+                        fontSize: 8.sp,
+                        fontFamily: FontFamily.interRegular,
+                        color: const Color(0xFF6B7280),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 8.h),
-          Text(
-            name,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-          ),
-          Text(
-            status,
-            style: TextStyle(fontSize: 12.sp, color: color),
-          ),
-          const Spacer(),
-          Text(
-            battery,
-            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

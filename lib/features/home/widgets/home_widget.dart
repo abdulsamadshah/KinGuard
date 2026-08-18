@@ -64,3 +64,63 @@ AppBar homeAppBar() {
     ],
   );
 }
+
+
+
+class GroupStyle {
+  final IconData icon;
+  final List<Color> gradient;
+
+  GroupStyle({required this.icon, required this.gradient});
+}
+
+class GroupStyleHelper {
+  static GroupStyle getStyle(String? type) {
+    switch (type?.toLowerCase()) {
+      case 'family':
+        return GroupStyle(
+          icon: Icons.home_rounded,
+          gradient: const [Color(0xFF3B82F6), Color(0xFF6366F1)],
+        );
+      case 'friends':
+        return GroupStyle(
+          icon: Icons.people_alt_rounded,
+          gradient: const [Color(0xFF10B981), Color(0xFF059669)],
+        );
+      case 'emergency':
+        return GroupStyle(
+          icon: Icons.shield_rounded,
+          gradient: const [Color(0xFFEF4444), Color(0xFFDC2626)],
+        );
+      case 'office':
+      case 'work':
+        return GroupStyle(
+          icon: Icons.business_center_rounded,
+          gradient: const [Color(0xFFF59E0B), Color(0xFFF97316)],
+        );
+      case 'trip':
+      case 'travel':
+        return GroupStyle(
+          icon: Icons.flight_rounded,
+          gradient: const [Color(0xFF8B5CF6), Color(0xFFA855F7)],
+        );
+      case 'college':
+      case 'school':
+        return GroupStyle(
+          icon: Icons.school_rounded,
+          gradient: const [Color(0xFFEC4899), Color(0xFFDB2777)],
+        );
+      case 'gym':
+      case 'fitness':
+        return GroupStyle(
+          icon: Icons.fitness_center_rounded,
+          gradient: const [Color(0xFF14B8A6), Color(0xFF0891B2)],
+        );
+      default:
+        return GroupStyle(
+          icon: Icons.groups_rounded,
+          gradient: const [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+        );
+    }
+  }
+}
