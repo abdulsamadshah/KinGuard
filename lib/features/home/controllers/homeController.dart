@@ -31,6 +31,10 @@ class HomeController extends StateNotifier<HomeState> {
   }
 
   void selectGroup(int index) {
+    state = state.copyWith(selectedGroupIndex: index);
+  }
+
+  void selectBottomIndex(int index) {
     state = state.copyWith(selectedIndex: index);
   }
 

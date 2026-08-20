@@ -19,7 +19,7 @@ class MainNavigationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(homeProvider).selectedIndex ?? 0;
+    final currentIndex = ref.watch(homeProvider).selectedIndex;
 
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: _screens),
@@ -38,7 +38,7 @@ class MainNavigationScreen extends ConsumerWidget {
           child: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (index) {
-              ref.read(homeProvider.notifier).selectGroup(index);
+              ref.read(homeProvider.notifier).selectBottomIndex(index);
             },
             backgroundColor: Colors.transparent,
             selectedItemColor: const Color(0xff00C48C),

@@ -5,7 +5,6 @@ import 'package:kinguard/Routes/app_route_config.dart';
 import 'package:kinguard/Routes/app_route_constants.dart';
 import 'package:kinguard/data/models/GroupModel.dart';
 import 'package:kinguard/features/home/providers/home_provider.dart';
-
 import 'package:kinguard/features/home/widgets/FamilyStatus.dart';
 import 'package:kinguard/features/home/widgets/HomeMap.dart';
 import 'package:kinguard/features/home/widgets/QuickActions.dart';
@@ -21,7 +20,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // Dummy list for skeleton loading
   final List<GroupData> _skeletonGroups = List.generate(
     5,
         (index) => GroupData(
@@ -189,7 +187,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildActiveCard(GroupData group) {
     final style = GroupStyleHelper.getStyle(group.groupType);
     final name = group.groupName ?? 'Loading Group';
-    final memberCount = 0; // TODO: fetch actual count when available
+    final memberCount = 0;
 
     return Container(
       padding: EdgeInsets.all(8.r),
@@ -279,7 +277,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildAllGroupsButton() {
     return GestureDetector(
       onTap: () {
-        // TODO: navigate to all groups screen
+
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 11.h),
@@ -314,7 +312,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final isActive = ref.watch(
-          homeProvider.select((s) => s.selectedIndex == index),
+          homeProvider.select((s) => s.selectedGroupIndex == index),
         );
 
         final style = GroupStyleHelper.getStyle(group.groupType);

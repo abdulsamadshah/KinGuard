@@ -8,5 +8,7 @@ class Urls {
   static const String logOut = '${ConstRes.aBaseUrl}logOut';
   static const String createGroup = '${ConstRes.aBaseUrl}group/createGroup';
   static const String getUserGroups = '${ConstRes.aBaseUrl}group/getUserGroups';
-
+  static const String addMember = '${ConstRes.aBaseUrl}member/addMember';
+  static const String getMembers = '${ConstRes.aBaseUrl}member/getMembers';
+  static const String getAllUsers = '${ConstRes.aBaseUrl}getAllUsers';
 }
