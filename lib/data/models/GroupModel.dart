@@ -36,6 +36,7 @@ class GroupData {
   String? groupType;
   int? createdBy;
   bool? isActive;
+  int? totalMembers;
   Creator? creator;
 
   GroupData({
@@ -46,6 +47,7 @@ class GroupData {
     this.createdBy,
     this.isActive,
     this.creator,
+    this.totalMembers
   });
 
   GroupData.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,7 @@ class GroupData {
     groupType = json['GroupType'];
     createdBy = json['CreatedBy'];
     isActive = json['IsActive'];
+    totalMembers = json['TotalMembers'];
     creator = json['creator'] != null
         ? Creator.fromJson(json['creator'])
         : null;
@@ -68,6 +71,7 @@ class GroupData {
     data['GroupType'] = groupType;
     data['CreatedBy'] = createdBy;
     data['IsActive'] = isActive;
+    data['TotalMembers'] = totalMembers;
     if (creator != null) {
       data['creator'] = creator!.toJson();
     }

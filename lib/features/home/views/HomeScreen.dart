@@ -213,7 +213,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         final style = GroupStyleHelper.getStyle(group.groupType);
         final name = group.groupName ?? 'Loading';
-        final memberCount = 0;
+
 
         return GestureDetector(
           onTap: isLoading ? null : onTap,
@@ -264,7 +264,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      '$memberCount Members',
+                      '${group.totalMembers} Members',
                       style: TextStyle(
                         fontSize: 8.sp,
                         fontFamily: FontFamily.interRegular,
