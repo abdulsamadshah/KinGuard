@@ -10,5 +10,5 @@ class Urls {
   static const String getUserGroups = '${ConstRes.aBaseUrl}group/getUserGroups';
   static const String addMember = '${ConstRes.aBaseUrl}member/addMember';
   static const String getMembers = '${ConstRes.aBaseUrl}member/getMembers';
-  static const String getAllUsers = '${ConstRes.aBaseUrl}getAllUsers';
+  static const String getAllUsers = '${ConstRes.aBaseUrl}getAllUser';
 }

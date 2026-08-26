@@ -15,7 +15,7 @@ class JoinMemberServices {
     return UserGroupsRes.fromJson(result);
   }
 
-  static Future<GetMembersRes> getMembers(int groupId) async {
+  static Future<GetMembersRes> getMembers(dynamic groupId) async {
     final result = await HttpUtil().get('${Urls.getMembers}/$groupId');
     return GetMembersRes.fromJson(result);
   }
@@ -25,9 +25,8 @@ class JoinMemberServices {
     required int userId,
     String role = 'Member',
   }) async {
-    final result = await HttpUtil().post(
-      '${Urls.addMember}?GroupId=$groupId&UserId=$userId&Role=$role',
-    );
+    dynamic param = {"GroupId": groupId, "UserId": userId, "Role": role};
+    final result = await HttpUtil().post(Urls.addMember, data: param);
     return AddMemberRes.fromJson(result);
   }
 }

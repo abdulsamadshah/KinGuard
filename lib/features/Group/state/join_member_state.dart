@@ -1,5 +1,4 @@
 import 'package:kinguard/data/models/all_users_model.dart';
-import 'package:kinguard/data/models/member_res.dart';
 import 'package:kinguard/data/models/user_groups_model.dart';
 
 
@@ -13,7 +12,6 @@ class JoinMemberState {
   final String? errorMessage;
   final Set<int> invitingUserIds;
 
-  /// Map<UserId, Set<GroupId>> — tracks which groups a user has been added to
   final Map<int, Set<int>> userAddedGroups;
 
   final bool contactPermissionDenied;

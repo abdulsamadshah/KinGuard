@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kinguard/core/utils/invite_helper.dart';
 import 'package:kinguard/data/models/all_users_model.dart';
 import 'package:kinguard/features/Group/providers/join_member_provider.dart';
 import 'package:kinguard/features/Group/widgets/Invite_via.dart';
@@ -116,10 +117,13 @@ class _JoinMemberScreenState extends ConsumerState<JoinMemberScreen> {
                       ),
                       SizedBox(height: 18.h),
                       BuildInviteViaCard(
-                        onPressCopyLink: () {},
-                        onPressMessages: () {},
-                        onPressShare: () {},
-                        onPressWhatsApp: () {},
+                        onPressWhatsApp: () =>
+                            InviteHelper.shareViaWhatsApp(context),
+                        onPressMessages: () =>
+                            InviteHelper.shareViaMessages(context),
+                        onPressCopyLink: () =>
+                            InviteHelper.copyInviteLink(context),
+                        onPressShare: () => InviteHelper.shareMore(context),
                       ),
                       SizedBox(height: 14.h),
                       buildStayConnectedBanner(),

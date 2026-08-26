@@ -39,14 +39,6 @@ class _SelectGroupBottomSheetState
   String? _selectedGroupName;
   bool _isSubmitting = false;
 
-  String? _buildImageUrl(String? path) {
-    if (path == null || path.isEmpty) return null;
-    if (path.startsWith('http')) return path;
-    if (path.startsWith('uploads/')) {
-      return '${ConstRes.aImageBaseUrl}$path';
-    }
-    return '${ConstRes.aImageBaseUrl}$path';
-  }
 
   Future<void> _handleSubmit() async {
     if (_selectedGroupId == null) return;
@@ -61,6 +53,7 @@ class _SelectGroupBottomSheetState
 
     if (!mounted) return;
 
+    Navigator.pop(context);
     Navigator.pop(context);
     widget.onDone(success, _selectedGroupId, _selectedGroupName);
   }
@@ -84,7 +77,7 @@ class _SelectGroupBottomSheetState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Grabber
+
           Container(
             width: 40.w,
             height: 4.h,
@@ -95,7 +88,7 @@ class _SelectGroupBottomSheetState
           ),
           SizedBox(height: 14.h),
 
-          // Header
+
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
@@ -124,7 +117,7 @@ class _SelectGroupBottomSheetState
           SizedBox(height: 16.h),
           const Divider(height: 1, color: Color(0xFFF3F4F6)),
 
-          // Group list
+
           Flexible(
             child: groups.isEmpty
                 ? _buildEmpty()
@@ -138,7 +131,8 @@ class _SelectGroupBottomSheetState
                 final isSelected = _selectedGroupId == group.groupId;
                 final isAlreadyIn =
                 alreadyIn.contains(group.groupId);
-                final img = _buildImageUrl(group.groupImage);
+                final img = "${ConstRes.aImageBaseUrl}${group.groupImage}";
+
 
                 return GestureDetector(
                   onTap: isAlreadyIn

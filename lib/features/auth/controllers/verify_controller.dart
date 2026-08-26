@@ -36,13 +36,18 @@ class VerifyController extends StateNotifier<VerifyState> {
         Global.storageServices.setString(
           PrefConst.STORAGE_USER_TOKEN_KEY,
           result.data!.token.toString(),
+        );       Global.storageServices.setString(
+          PrefConst.MobileNo,
+          phone,
         );
         if (result.data?.isNewUser == true) {
+
+
+          appRouter.router.goNamed(RouteConstants.homeScreen);
+        } else {
           await CreateProfileBottomSheet.show(
             ContextUtility.navigatorkey.currentState!.context,
           );
-        } else {
-          appRouter.router.goNamed(RouteConstants.homeScreen);
         }
       } else {
         state = state.copyWith(loading: false);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kinguard/core/constants/pref_res.dart';
 import 'package:kinguard/core/network/Constant.dart';
+import 'package:kinguard/core/utils/Global.dart';
 import 'package:kinguard/data/models/all_users_model.dart';
 import 'package:kinguard/features/Group/providers/join_member_provider.dart';
 import 'package:kinguard/features/Group/widgets/select_group_bottom_sheet.dart';
@@ -112,32 +114,35 @@ Widget buildSearchBar({
 
 
 Widget buildEmptyState() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-    child: Column(
-      children: [
-        Icon(Icons.people_outline_rounded,
-            size: 60.sp, color: const Color(0xFF9CA3AF)),
-        SizedBox(height: 12.h),
-        Text(
-          'No users found',
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF1F2937),
+  return Center(
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.people_outline_rounded,
+              size: 60.sp, color: const Color(0xFF9CA3AF)),
+          SizedBox(height: 12.h),
+          Text(
+            'No users found',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF1F2937),
+            ),
           ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          'Try a different search or refresh',
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontFamily: 'Inter',
-            color: const Color(0xFF6B7280),
+          SizedBox(height: 4.h),
+          Text(
+            'Try a different search or refresh',
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontFamily: 'Inter',
+              color: const Color(0xFF6B7280),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
@@ -357,7 +362,8 @@ Widget buildUserCard({
       final displayName = user.contactName ?? user.name ?? 'Unknown';
       final phone = user.mobileNo ?? '-';
 
-      return Container(
+      return
+        user.mobileNo.toString() == Global.storageServices.get(PrefConst.MobileNo)?SizedBox():Container(
         margin: EdgeInsets.symmetric(horizontal: 16.w),
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(

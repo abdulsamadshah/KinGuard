@@ -1,10 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:kinguard/core/utils/contact_helper.dart';
 import 'package:kinguard/data/models/all_users_model.dart';
-import 'package:kinguard/data/models/member_res.dart';
 import 'package:kinguard/features/Group/services/join_member_services.dart';
 import 'package:kinguard/features/Group/state/join_member_state.dart';
 
@@ -27,7 +25,7 @@ class JoinMemberController extends StateNotifier<JoinMemberState> {
     try {
       state = state.copyWith(clearError: true);
 
-      // 1. Get device contacts
+
       final contactMap = await ContactHelper.getContactPhoneMap();
 
       if (contactMap.isEmpty) {
@@ -39,7 +37,7 @@ class JoinMemberController extends StateNotifier<JoinMemberState> {
         return;
       }
 
-      // 2. Get all users from server
+
       final response = await JoinMemberServices.getAllUsers();
       if (response.status != true) {
         state = state.copyWith(
@@ -50,7 +48,7 @@ class JoinMemberController extends StateNotifier<JoinMemberState> {
 
       final allUsers = response.userData ?? [];
 
-      // 3. Match server users with device contacts
+
       final matched = <UserItem>[];
       for (final user in allUsers) {
         final serverPhone =
@@ -78,7 +76,7 @@ class JoinMemberController extends StateNotifier<JoinMemberState> {
       if (response.status == true) {
         state = state.copyWith(userGroups: response.data ?? []);
 
-        // Pre-fill userAddedGroups from existing members
+
         await _fetchAllGroupMembers();
       }
     } catch (_) {
